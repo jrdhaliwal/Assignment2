@@ -1,0 +1,34 @@
+#container {
+    background-color: rgb(233, 232, 232);
+    text-align: center;
+}
+
+header, .column, .bigColumn, footer {
+    background-color: rgb(170, 169, 169);
+}
+
+.column, .bigColumn {
+    display: inline-block;
+}
+
+.column {
+    width: 25%;
+    margin-left: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+.bigColumn {
+    width: 43%;
+    margin-left: 2em;
+    margin-right: 1em;
+}
+
+footer, header {
+    height: 80px;
+}
+
+footer {
+    text-align: center;
+}
+

@@ -4,6 +4,18 @@
     margin-top: 1em;
 }
 
+#searchContainer {
+    text-align: center;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
 header, .column, .bigColumn, footer {
     background-color: rgb(170, 169, 169);
 }
@@ -23,14 +35,14 @@ nav {
 
 .column {
     width: 25%;
-    margin-left: 2em;
+    margin-left: 1em;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
 }
 
 .bigColumn {
     width: 43%;
-    margin-left: 2em;
+    margin-left: 1em;
     margin-right: 1em;
 }
 

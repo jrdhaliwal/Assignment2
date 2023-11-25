@@ -7,15 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <script src="starting-files/assign2.js"></script>
     <header>
-        <h1>Logo</h1>
+        <h1 id="logo">Logo</h1>
         <nav>
-            <a href="">Search</a>
-            <a href="">Playlist</a>
-            <a href="">Credits</a>
+            <button id="searchButton">Search</button>
+            <button id="playlistButton">Playlist</button>
+            <button id="detailButton">Credits</button>
         </nav>
     </header>
-    <div id="homeContainer">
+    <div id="homeContainer" class="show">
         <div class="column">
             <h2>Top Genres</h2>
         </div>
@@ -26,13 +27,20 @@
             <h2>Most Popular Songs</h2>
         </div>
     </div>
-    <div id="searchContainer">
+    <div id="searchContainer" class="hide">
         <div id="searchColumn">
             <h2>Basic Song Search</h2>
-            <form>
-                
-            </form>
+            
         </div>
+        <div>
+            <h2>Browse / Search Results</h2>
+        </div>
+    </div>
+    <div id="playlistContainer" class="hide">
+        <h2>PLAYLIST</h2>
+    </div>
+    <div id="detailContainer" class="hide">
+        <h2>DETAILS</h2>
     </div>
     <footer>
         <h2>Footer</h2>

@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
    });
 
-   // Functions that show/hide the various views
+   // Functions that show/hide the variou views
    function showHideHome(event) {
       if(homeContainer.className == "hide") {
          searchContainer.className = "hide";

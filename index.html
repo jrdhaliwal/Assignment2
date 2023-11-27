@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
     <link rel="stylesheet" href="style.css">
+    <script src="starting-files/assign2.js"></script>
 </head>
 <body>
-    <script src="starting-files/assign2.js"></script>
     <header>
         <h1 id="logo">Logo</h1>
         <nav>
@@ -19,12 +19,15 @@
     <div id="homeContainer" class="show">
         <div class="column">
             <h2>Top Genres</h2>
+            <ul id="topGenres"></ul>
         </div>
         <div class="column">
             <h2>Top Artists</h2>
+            <ul id="topArtists"></ul>
         </div>
         <div class="bigColumn">
             <h2>Most Popular Songs</h2>
+            <ul id="popularSongs"></ul>
         </div>
     </div>
     <div id="searchContainer" class="hide">
@@ -33,19 +36,43 @@
             
         </div>
         <div id="resultsColumn">
-            <h2>Browse / Search Results</h2>
-            <div class="searchResults" id="titleResults">
-                <h3>Title</h3>
-            </div>
-            <div class="searchResults" id="artistResults">
-                <h3>Artist</h3>
-            </div>
-            <div class="searchResults" id="yearResults">
-                <h3>Year</h3>
-            </div>
-            <div class="searchResults" id="genreResults">
-                <h3>Genre</h3>
-            </div>
+            <h2>Search Results</h2>
+           <table id="songsTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Year</th>
+                    <th>Genre</th>
+                </tr>
+            </thead>
+            <tbody id="songsData">
+            </tbody>
+           </table>
+           <table id="songsDetails" class="hide">
+                <caption>
+                    <h3>Details</h3>
+                </caption>
+                <tr>
+                    <th>Title</th>
+                    <td id="songTitle"></td>
+                </tr>
+                <tr>
+                    <th>Energy</th>
+                    <td id="songEnergy"></td>
+                </tr>
+                <tr>
+                    <th>Danceability</th>
+                    <td id="songDanceability"></td>
+                </tr>
+                <tr>
+                    <th>Liveness</th>
+                    <td id="songLiveness"></td>
+                </tr>
+                <tfoot>
+                    <button id="returnButton" class="hide">Return</button>
+                </tfoot>
+           </table>
         </div>
     </div>
     <div id="playlistContainer" class="hide">

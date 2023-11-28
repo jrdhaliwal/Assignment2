@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
       populateTopGenres(songs);
       populateTopArtists(songs);
       populateTopSongs(songs);
+      sort(songs);
    // If not, fetch API   
    } else {
       fetch(api)
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
          populateTopGenres(songs);
          populateTopArtists(songs);
          populateTopSongs(songs);
+         sort(songs);
       })
       .catch(error => {
          console.error("Error fetching data:", error);
@@ -233,6 +235,23 @@ document.addEventListener("DOMContentLoaded", function () {
          document.querySelector("#searchContainer").className = "show";
          document.querySelector("#detailContainer").className = "hide";
          btnClose.className = "hide";
+      })
+   }
+
+   function sort(data) {
+      const tr = document.querySelector("#songsContainer");
+      tr.addEventListener("click", e => {
+         if(e.target.id == "title") {
+            const sortedSongs = data.sort((a, b) => (a.title < b.title ? -1 : 2));
+            
+            for(s of sortedSongs) {
+               const tr = document.createElement("tr");
+               tr.appendChild(tableColumn(s, "title"));
+            }
+         } else if(e.target.id == "artist") {
+            const sortedArtists = data.sort((a, b) => (a.artist.name < b.artist.name ? -1 : 2));
+            for 
+         }
       })
    }
 });

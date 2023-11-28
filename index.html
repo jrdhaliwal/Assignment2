@@ -33,7 +33,20 @@
     <div id="searchContainer" class="hide">
         <div id="searchColumn">
             <h2>Song Search</h2>
-            
+            <input type="radio" id="titleRadio">
+            <label for="titleRadio">Title</label>
+            <input type="text" name="titleName" id="titleName" placeholder="Type here"></br>
+            </br>
+            <input type="radio" id="artistRadio">
+            <label for="artistRadio">Artist</label>
+            <input type="text" name="artistName" id="artistName" placeholder="Pick one"></br>
+            </br>
+            <input type="radio" id="genreRadio">
+            <label for="genreRadio">Genre</label>
+            <input type="text" name="genreName" id="genreName" placeholder="Pick one"></br>
+            </br>
+            <button id="clearButton"> Clear</button>
+            <button id="filterButton">Filter</button>
         </div>
         <div id="resultsColumn">
             <h2>Search Results</h2>
@@ -42,8 +55,9 @@
                 <tr id="songsContainer">
                     <th id="title">Title</th>
                     <th id="artist">Artist</th>
-                    <th>Year</th>
-                    <th>Genre</th>
+                    <th id="genre">Genre</th>
+                    <th id="year">Year</th>
+                    <th id="popularity">Popularity</th>
                 </tr>
             </thead>
             <tbody id="songsData">

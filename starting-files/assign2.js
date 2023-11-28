@@ -174,6 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
          tr.appendChild(tableColumn(s.artist, "name"));
          tr.appendChild(tableColumn(s.genre, "name"));
          tr.appendChild(tableColumn(s, "year"));
+         tr.appendChild(tableColumn(s.details, "popularity"));
 
          tr.addEventListener("click", e => {
             tableClicks(e, songs);
@@ -239,18 +240,75 @@ document.addEventListener("DOMContentLoaded", function () {
    }
 
    function sort(data) {
+      const songData = document.querySelector("#songsData");
       const tr = document.querySelector("#songsContainer");
+
       tr.addEventListener("click", e => {
          if(e.target.id == "title") {
             const sortedSongs = data.sort((a, b) => (a.title < b.title ? -1 : 2));
-            
-            for(s of sortedSongs) {
+            songData.innerHTML = "";
+
+            for(let s of sortedSongs) {
                const tr = document.createElement("tr");
                tr.appendChild(tableColumn(s, "title"));
+               tr.appendChild(tableColumn(s.artist, "name"));
+               tr.appendChild(tableColumn(s.genre, "name"));
+               tr.appendChild(tableColumn(s, "year"));
+               tr.appendChild(tableColumn(s.details, "popularity"));
+               songData.appendChild(tr);
             }
          } else if(e.target.id == "artist") {
             const sortedArtists = data.sort((a, b) => (a.artist.name < b.artist.name ? -1 : 2));
-            for 
+            songData.innerHTML = "";
+
+            for(let s of sortedArtists) {
+               const tr = document.createElement("tr");
+               tr.appendChild(tableColumn(s, "title"));
+               tr.appendChild(tableColumn(s.artist, "name"));
+               tr.appendChild(tableColumn(s.genre, "name"));
+               tr.appendChild(tableColumn(s, "year"));
+               tr.appendChild(tableColumn(s.details, "popularity"));
+               songData.appendChild(tr);
+            }
+         } else if(e.target.id == "year") {
+            const sortedYear = data.sort((a, b) => b.year - a.year);
+            songData.innerHTML = "";
+
+            for(let s of sortedYear) {
+               const tr = document.createElement("tr");
+               tr.appendChild(tableColumn(s, "title"));
+               tr.appendChild(tableColumn(s.artist, "name"));
+               tr.appendChild(tableColumn(s.genre, "name"));
+               tr.appendChild(tableColumn(s, "year"));
+               tr.appendChild(tableColumn(s.details, "popularity"));
+               songData.appendChild(tr);
+            }
+         } else if(e.target.id == "genre") {
+            const sortedGenres = data.sort((a, b) => (a.genre.name < b.genre.name ? -1 : 2));
+            songData.innerHTML = "";
+
+            for(let s of sortedGenres) {
+               const tr = document.createElement("tr");
+               tr.appendChild(tableColumn(s, "title"));
+               tr.appendChild(tableColumn(s.artist, "name"));
+               tr.appendChild(tableColumn(s.genre, "name"));
+               tr.appendChild(tableColumn(s, "year"));
+               tr.appendChild(tableColumn(s.details, "popularity"));
+               songData.appendChild(tr);
+            }
+         } else if(e.target.id == "popularity") {
+            const sortedPopularity = data.sort((a, b) => b.details.popularity - a.details.popularity);
+            songData.innerHTML = "";
+
+            for(let s of sortedPopularity) {
+               const tr = document.createElement("tr");
+               tr.appendChild(tableColumn(s, "title"));
+               tr.appendChild(tableColumn(s.artist, "name"));
+               tr.appendChild(tableColumn(s.genre, "name"));
+               tr.appendChild(tableColumn(s, "year"));
+               tr.appendChild(tableColumn(s.details, "popularity"));
+               songData.appendChild(tr);
+            }
          }
       })
    }

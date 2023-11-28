@@ -5,8 +5,8 @@
 }
 
 #searchContainer {
-    text-align: center;
     width: 100%;
+    text-align: center;
 }
 
 .show {
@@ -59,7 +59,7 @@ nav {
 }
 
 #resultsColumn {
-    width: 74.13%;
+    width: 73.8%;
     margin-left: 1em; /* Add margin to separate the columns */
     margin-top: 1.5em;
     max-height: 600px;

@@ -39,7 +39,7 @@
             <h2>Search Results</h2>
            <table id="songsTable">
             <thead>
-                <tr>
+                <tr id="songsContainer">
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Year</th>
@@ -49,30 +49,6 @@
             <tbody id="songsData">
             </tbody>
            </table>
-           <table id="songsDetails" class="hide">
-                <caption>
-                    <h3>Details</h3>
-                </caption>
-                <tr>
-                    <th>Title</th>
-                    <td id="songTitle"></td>
-                </tr>
-                <tr>
-                    <th>Energy</th>
-                    <td id="songEnergy"></td>
-                </tr>
-                <tr>
-                    <th>Danceability</th>
-                    <td id="songDanceability"></td>
-                </tr>
-                <tr>
-                    <th>Liveness</th>
-                    <td id="songLiveness"></td>
-                </tr>
-                <tfoot>
-                    <button id="returnButton" class="hide">Return</button>
-                </tfoot>
-           </table>
         </div>
     </div>
     <div id="playlistContainer" class="hide">
@@ -80,6 +56,42 @@
     </div>
     <div id="detailContainer" class="hide">
         <h2>DETAILS</h2>
+        <table id="songsDetailsFromHome" class="show">
+            <caption>
+                <h3>Details</h3>
+            </caption>
+            <tr>
+                <th>Title</th>
+                <td id="songTitleHome"></td>
+            </tr>
+            <tr>
+                <th>Energy</th>
+                <td id="songEnergyHome"></td>
+            </tr>
+            <tr>
+                <th>Danceability</th>
+                <td id="songDanceabilityHome"></td>
+            </tr>
+            <tr>
+                <th>Liveness</th>
+                <td id="songLivenessHome"></td>
+            </tr>
+            <tr>
+                <th>Valence</th>
+                <td id="songValenceHome"></td>
+            </tr>
+            <tr>
+                <th>Acousticness</th>
+                <td id="songAcousticnessHome"></td>
+            </tr>
+            <tr>
+                <th>Speechiness</th>
+                <td id="songSpeechinessHome"></td>
+            </tr>
+            <tfoot>
+                <button id="returnButtonHome" class="hide">Return</button>
+            </tfoot>
+       </table>
     </div>
     <footer>
         <h2>Footer</h2>

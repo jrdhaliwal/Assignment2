@@ -1,5 +1,5 @@
 /* url of song api --- https versions hopefully a little later this semester */
-const api = 'http://www.randyconnolly.com/funwebdev/3rd/api/music/songs-nested.php';
+const api = 'https://www.randyconnolly.com/funwebdev/3rd/api/music/songs-nested.php';
 
 document.addEventListener("DOMContentLoaded", function () {
    // Create key and value for localStorage
@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const songs = JSON.parse(localStorageData);
       populateResults(songs);
       populateTopGenres(songs);
+      populateTopArtists(songs);
+      populateTopSongs(songs);
    // If not, fetch API   
    } else {
       fetch(api)
@@ -26,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
          const songs = JSON.parse(localStorage.getItem(localStorageKey));
          populateResults(songs);
          populateTopGenres(songs);
+         populateTopArtists(songs);
+         populateTopSongs(songs);
       })
       .catch(error => {
          console.error("Error fetching data:", error);
@@ -51,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
    });
 
-   // Functions that show/hide the variou views
+   // Functions that show/hide the various views
    function showHideHome(event) {
       if(homeContainer.className == "hide") {
          searchContainer.className = "hide";
@@ -77,13 +81,82 @@ document.addEventListener("DOMContentLoaded", function () {
       }
    }
 
+   // Function that populates the Top Genres column
    function populateTopGenres(data) {
-      const genreCounts = {};
+      // Using set to find all unique genre names, retrieved from: https://www.w3schools.com/js/js_object_sets.asp
+      const uniqueGenres = new Set(data.map(d => d.genre.name));
+      const genresArray = [];
+
+      for(let u of uniqueGenres) {
+         const found = data.filter(d => d.genre.name == u);
+         const foundLength = found.length;
+         const genreObject = {genre: u, songCount: foundLength};
+         genresArray.push(genreObject);
+      }
+      genresArray.sort((a, b) => b.songCount - a.songCount);
+      
+      const topGenres = document.querySelector("#topGenres");
+
+      for(let x = 0; x < 15; x++) {
+         const li = document.createElement("li");
+         const a = document.createElement("a");
+         a.textContent = genresArray[x].genre;
+
+         li.appendChild(a);
+         topGenres.appendChild(li);
+      }
+   }
+   // Function that populates the Top Artists column
+   function populateTopArtists(data) {
+      const uniqueArtists = new Set(data.map(d => d.artist.name));
+      const artistsArray = [];
+
+      for(let u of uniqueArtists) {
+         const found = data.filter(d => d.artist.name == u);
+         const foundLength = found.length;
+         const genreObject = {artist: u, songCount: foundLength};
+         artistsArray.push(genreObject);
+      }
+      artistsArray.sort((a, b) => b.songCount - a.songCount);
+      
+      const topArtists = document.querySelector("#topArtists");
+
+      for(let x = 0; x < 15; x++) {
+         const li = document.createElement("li");
+         const a = document.createElement("a");
+         a.textContent = artistsArray[x].artist;
+
+         li.appendChild(a);
+         topArtists.appendChild(li);
+      }
+   }
+   // Function that populates the Most Popular Songs column
+   function populateTopSongs(data) {
+      const sortedSongs = [];
 
       for(let d of data) {
-         const genreName = d.genre.name;
-         
+         const songObject = {song: d.title, popularity: d.details.popularity};
+         sortedSongs.push(songObject);
       }
+      sortedSongs.sort((a, b) => b.popularity - a.popularity);
+      
+      const topSongs = document.querySelector("#popularSongs");
+      
+      for(let x = 0; x < 15; x++) {
+         const li = document.createElement("li");
+         const a = document.createElement("a");
+         a.dataset.title = sortedSongs[x].song;
+         a.textContent = sortedSongs[x].song;
+
+         li.appendChild(a);
+         topSongs.appendChild(li);
+      }
+
+      topSongs.addEventListener("click", e => {
+         if(e.target.nodeName == "A") {
+            displaySongFromHome(e, data);
+         }
+      })
    }
 
    // Function that populates the results table with songs and displays song details on click
@@ -126,21 +199,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
    // Function that displays the song details
    function displaySong(song) {
-      document.querySelector("#songsTable").className = "hide";
-      document.querySelector("#songsDetails").className = "show";
+      document.querySelector("#searchContainer").className = "hide";
+      document.querySelector("#detailContainer").className = "show";
 
-      document.querySelector("#songTitle").textContent = song.title;
-      document.querySelector("#songEnergy").textContent = song.analytics.energy;
-      document.querySelector("#songDanceability").textContent = song.analytics.danceability;
-      document.querySelector("#songLiveness").textContent = song.analytics.liveness;
+      displayDetails(song);
+   }
 
-      const closeBtn = document.querySelector("#returnButton");
-      closeBtn.className = "show";
+   // Function that displays the song details when selected from Home view
+   function displaySongFromHome(e, data) {
+      title = e.target.dataset.title;
+      const foundSong = data.find(d => d.title == title);
 
-      closeBtn.addEventListener("click", e => {
-         document.querySelector("#songsTable").className = "show";
-         document.querySelector("#songsDetails").className = "hide";
-         closeBtn.className = "hide";
+      document.querySelector("#homeContainer").className = "hide";
+      document.querySelector("#detailContainer").className = "show";
+
+      displayDetails(foundSong);      
+   }
+
+   // Function that fills table in Song Details view
+   function displayDetails(song) {
+      document.querySelector("#songTitleHome").textContent = song.title;
+      document.querySelector("#songEnergyHome").textContent = song.analytics.energy;
+      document.querySelector("#songDanceabilityHome").textContent = song.analytics.danceability;
+      document.querySelector("#songLivenessHome").textContent = song.analytics.liveness;
+      document.querySelector("#songValenceHome").textContent = song.analytics.valence;
+      document.querySelector("#songAcousticnessHome").textContent = song.analytics.acousticness;
+      document.querySelector("#songSpeechinessHome").textContent = song.analytics.speechiness;
+
+      const btnClose = document.querySelector("#returnButtonHome");
+      btnClose.className = "show";
+
+      btnClose.addEventListener("click", e => {
+         document.querySelector("#searchContainer").className = "show";
+         document.querySelector("#detailContainer").className = "hide";
+         btnClose.className = "hide";
       })
    }
 });

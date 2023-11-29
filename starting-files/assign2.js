@@ -418,6 +418,10 @@ document.addEventListener("DOMContentLoaded", function () {
                const selectedSong = data.filter(d => d.title.toLowerCase() == userChoice);
                populateResults(selectedSong);
                sort(selectedSong);
+               if(userChoice == "") {
+                  populateResults(data);
+                  sort(data);
+               }
             } else if(artistSelect.disabled == false) {
                // Retrieve value of selected option, retrieved from: https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
                const userOption = artistSelect.options[artistSelect.selectedIndex].value.toLowerCase();

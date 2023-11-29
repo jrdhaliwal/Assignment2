@@ -9,13 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
    // Check if localStorageDataExists
    if(localStorageData) {
       const songs = JSON.parse(localStorageData);
-      populateResults(songs);
-      populateSearch(songs);
-      populateTopGenres(songs);
-      populateTopArtists(songs);
-      populateTopSongs(songs);
-      sort(songs);
-      search(songs);
+      handleProgram(songs);
    // If not, fetch API   
    } else {
       fetch(api)
@@ -29,13 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(songData => {
          localStorage.setItem(localStorageKey, JSON.stringify(songData));
          const songs = JSON.parse(localStorage.getItem(localStorageKey));
-         populateResults(songs);
-         populateSearch(songs);
-         populateTopGenres(songs);
-         populateTopArtists(songs);
-         populateTopSongs(songs);
-         sort(songs);
-         search(songs);
+         handleProgram(songs);
       })
       .catch(error => {
          console.error("Error fetching data:", error);
@@ -180,11 +168,10 @@ document.addEventListener("DOMContentLoaded", function () {
    }
    // Function that populates the results table with songs and displays song details on click
    function populateResults(songs) {
-      const sortedSongs = songs.sort((a, b) => (a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 2));
       const tableBody = document.querySelector("#songsData");
       tableBody.innerHTML = "";
 
-      for(s of sortedSongs) {
+      for(s of songs) {
          const tr = document.createElement("tr");
          tr.dataset.song = s.song_id;
          
@@ -201,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
          tableBody.appendChild(tr);
       }
    }
-
+   // Function that populates the search column with the various artists and genres
    function populateSearch(songs) {
       const artistSelect = document.querySelector("#artistSelect");
       const genreSelect = document.querySelector("#genreSelect");
@@ -280,7 +267,6 @@ document.addEventListener("DOMContentLoaded", function () {
       populateResults(artistArray);
       sort(artistArray);
    }
-
    // Function that fills table in Song Details view
    function displayDetails(song) {
       document.querySelector("#songTitleHome").textContent = song.title;
@@ -302,7 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
    }
 
    // Function to sort the results table in the Search view
-   // FIX AND MAKE SEPARATE SORT FUNCTION LATER
    function sort(data) {
       const songData = document.querySelector("#songsData");
       const tr = document.querySelector("#songsContainer");
@@ -312,71 +297,33 @@ document.addEventListener("DOMContentLoaded", function () {
             const sortedSongs = data.sort((a, b) => (a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
-            for(let s of sortedSongs) {
-               const tr = document.createElement("tr");
-               tr.appendChild(tableColumn(s, "title"));
-               tr.appendChild(tableColumn(s.artist, "name"));
-               tr.appendChild(tableColumn(s.genre, "name"));
-               tr.appendChild(tableColumn(s, "year"));
-               tr.appendChild(tableColumn(s.details, "popularity"));
-               songData.appendChild(tr);
-            }
+            populateResults(sortedSongs);
          } else if(e.target.id == "artist") {
             const sortedArtists = data.sort((a, b) => (a.artist.name.toLowerCase() < b.artist.name.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
-            for(let s of sortedArtists) {
-               const tr = document.createElement("tr");
-               tr.appendChild(tableColumn(s, "title"));
-               tr.appendChild(tableColumn(s.artist, "name"));
-               tr.appendChild(tableColumn(s.genre, "name"));
-               tr.appendChild(tableColumn(s, "year"));
-               tr.appendChild(tableColumn(s.details, "popularity"));
-               songData.appendChild(tr);
-            }
+            populateResults(sortedArtists);
          } else if(e.target.id == "year") {
             const sortedYear = data.sort((a, b) => b.year - a.year);
             songData.innerHTML = "";
 
-            for(let s of sortedYear) {
-               const tr = document.createElement("tr");
-               tr.appendChild(tableColumn(s, "title"));
-               tr.appendChild(tableColumn(s.artist, "name"));
-               tr.appendChild(tableColumn(s.genre, "name"));
-               tr.appendChild(tableColumn(s, "year"));
-               tr.appendChild(tableColumn(s.details, "popularity"));
-               songData.appendChild(tr);
-            }
+            populateResults(sortedYear);
          } else if(e.target.id == "genre") {
             const sortedGenres = data.sort((a, b) => (a.genre.name.toLowerCase() < b.genre.name.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
-            for(let s of sortedGenres) {
-               const tr = document.createElement("tr");
-               tr.appendChild(tableColumn(s, "title"));
-               tr.appendChild(tableColumn(s.artist, "name"));
-               tr.appendChild(tableColumn(s.genre, "name"));
-               tr.appendChild(tableColumn(s, "year"));
-               tr.appendChild(tableColumn(s.details, "popularity"));
-               songData.appendChild(tr);
-            }
+            populateResults(sortedGenres);
          } else if(e.target.id == "popularity") {
             const sortedPopularity = data.sort((a, b) => b.details.popularity - a.details.popularity);
             songData.innerHTML = "";
 
-            for(let s of sortedPopularity) {
-               const tr = document.createElement("tr");
-               tr.appendChild(tableColumn(s, "title"));
-               tr.appendChild(tableColumn(s.artist, "name"));
-               tr.appendChild(tableColumn(s.genre, "name"));
-               tr.appendChild(tableColumn(s, "year"));
-               tr.appendChild(tableColumn(s.details, "popularity"));
-               songData.appendChild(tr);
-            }
+            populateResults(sortedPopularity);
          }
       })
-   }
 
+      
+   }
+   // Function that handles all searching 
    function search(data) {
       const titleRadio = document.querySelector("#titleRadio");
       const titleName = document.querySelector("#titleName");
@@ -436,5 +383,30 @@ document.addEventListener("DOMContentLoaded", function () {
             }
          }
       })
+   }
+
+   function credits() {
+      const nav = document.querySelector("nav");
+      const popup = document.querySelector("#popup");
+      nav.addEventListener("mouseover", e => {
+         if(e.target.id == "creditsButton") {
+            popup.className = "show";
+            setTimeout(() => {
+               popup.className = "hide";
+            }, 5000);
+         }
+      })
+   }
+
+   // Function that handles all other functions. Runs on page load.
+   function handleProgram(data) {
+      populateResults(data);
+      populateSearch(data);
+      populateTopGenres(data);
+      populateTopArtists(data);
+      populateTopSongs(data);
+      sort(data);
+      search(data);
+      credits();
    }
 });

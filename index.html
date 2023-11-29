@@ -33,17 +33,21 @@
     <div id="searchContainer" class="hide">
         <div id="searchColumn">
             <h2>Song Search</h2>
-            <input type="radio" id="titleRadio">
+            <input type="radio" id="titleRadio" name="radioButton">
             <label for="titleRadio">Title</label>
             <input type="text" name="titleName" id="titleName" placeholder="Type here"></br>
             </br>
-            <input type="radio" id="artistRadio">
+            <input type="radio" id="artistRadio" name="radioButton">
             <label for="artistRadio">Artist</label>
-            <input type="text" name="artistName" id="artistName" placeholder="Pick one"></br>
+            <select name="artistSelect" id="artistSelect">
+                <option value="" disabled selected>Pick one</option>
+            </select></br>
             </br>
-            <input type="radio" id="genreRadio">
+            <input type="radio" id="genreRadio" name="radioButton">
             <label for="genreRadio">Genre</label>
-            <input type="text" name="genreName" id="genreName" placeholder="Pick one"></br>
+            <select name="genreSelect" id="genreSelect">
+               <option value="" disabled selected>Pick one</option> 
+            </select></br>
             </br>
             <button id="clearButton"> Clear</button>
             <button id="filterButton">Filter</button>

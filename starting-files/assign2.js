@@ -10,10 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
    if(localStorageData) {
       const songs = JSON.parse(localStorageData);
       populateResults(songs);
+      populateSearch(songs);
       populateTopGenres(songs);
       populateTopArtists(songs);
       populateTopSongs(songs);
       sort(songs);
+      search(songs);
    // If not, fetch API   
    } else {
       fetch(api)
@@ -28,10 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
          localStorage.setItem(localStorageKey, JSON.stringify(songData));
          const songs = JSON.parse(localStorage.getItem(localStorageKey));
          populateResults(songs);
+         populateSearch(songs);
          populateTopGenres(songs);
          populateTopArtists(songs);
          populateTopSongs(songs);
          sort(songs);
+         search(songs);
       })
       .catch(error => {
          console.error("Error fetching data:", error);
@@ -102,11 +106,18 @@ document.addEventListener("DOMContentLoaded", function () {
       for(let x = 0; x < 15; x++) {
          const li = document.createElement("li");
          const a = document.createElement("a");
+         a.dataset.genre = genresArray[x].genre;
          a.textContent = genresArray[x].genre;
 
          li.appendChild(a);
          topGenres.appendChild(li);
       }
+
+      topGenres.addEventListener("click", e => {
+         if(e.target.nodeName == "A") {
+            displayGenreFromHome(e, data);
+         }
+      })
    }
    // Function that populates the Top Artists column
    function populateTopArtists(data) {
@@ -126,11 +137,18 @@ document.addEventListener("DOMContentLoaded", function () {
       for(let x = 0; x < 15; x++) {
          const li = document.createElement("li");
          const a = document.createElement("a");
+         a.dataset.artist = artistsArray[x].artist;
          a.textContent = artistsArray[x].artist;
 
          li.appendChild(a);
          topArtists.appendChild(li);
       }
+
+      topArtists.addEventListener("click", e => {
+         if(e.target.nodeName == "A") {
+            displayArtistFromHome(e, data);
+         }
+      })
    }
    // Function that populates the Most Popular Songs column
    function populateTopSongs(data) {
@@ -160,11 +178,11 @@ document.addEventListener("DOMContentLoaded", function () {
          }
       })
    }
-
    // Function that populates the results table with songs and displays song details on click
    function populateResults(songs) {
-      const sortedSongs = songs.sort((a, b) => (a.title < b.title ? -1 : 2));
+      const sortedSongs = songs.sort((a, b) => (a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 2));
       const tableBody = document.querySelector("#songsData");
+      tableBody.innerHTML = "";
 
       for(s of sortedSongs) {
          const tr = document.createElement("tr");
@@ -184,6 +202,30 @@ document.addEventListener("DOMContentLoaded", function () {
       }
    }
 
+   function populateSearch(songs) {
+      const artistSelect = document.querySelector("#artistSelect");
+      const genreSelect = document.querySelector("#genreSelect");
+
+      const uniqueArtists = new Set(songs.map(s => s.artist.name));
+      const uniqueGenres = new Set(songs.map(s => s.genre.name));
+
+      for(let a of uniqueArtists) {
+         const optionArtist = document.createElement("option");
+         optionArtist.value = a;
+         optionArtist.textContent = a;
+
+         artistSelect.appendChild(optionArtist);
+      }
+
+      for(let g of uniqueGenres) {
+         const optionGenre = document.createElement("option");
+         optionGenre.value = g;
+         optionGenre.textContent = g;
+
+         genreSelect.appendChild(optionGenre);
+      }
+   }
+
    // Function that handles table clicks and displays song details
    function tableClicks(e, songs) {
       const songID = e.target.parentNode.dataset.song;
@@ -192,7 +234,6 @@ document.addEventListener("DOMContentLoaded", function () {
       displaySong(selectedSong);
 
    }
-
    // Function that creates a table column
    function tableColumn(object, field) {
       const td = document.createElement("td");
@@ -207,7 +248,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       displayDetails(song);
    }
-
    // Function that displays the song details when selected from Home view
    function displaySongFromHome(e, data) {
       title = e.target.dataset.title;
@@ -217,6 +257,28 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector("#detailContainer").className = "show";
 
       displayDetails(foundSong);      
+   }
+   // Function that displays the selected genre when selected from Home view
+   function displayGenreFromHome(e, data) {
+      genre = e.target.dataset.genre;
+      const genreArray = data.filter(d => d.genre.name == genre);
+
+      document.querySelector("#homeContainer").className = "hide";
+      document.querySelector("#searchContainer").className = "show";
+      
+      populateResults(genreArray);
+      sort(genreArray);
+   }
+   // Function that displays the selected artist when selected from Home view
+   function displayArtistFromHome(e, data) {
+      artist = e.target.dataset.artist;
+      const artistArray = data.filter(d => d.artist.name == artist);
+
+      document.querySelector("#homeContainer").className = "hide";
+      document.querySelector("#searchContainer").className = "show";
+      
+      populateResults(artistArray);
+      sort(artistArray);
    }
 
    // Function that fills table in Song Details view
@@ -239,13 +301,15 @@ document.addEventListener("DOMContentLoaded", function () {
       })
    }
 
+   // Function to sort the results table in the Search view
+   // FIX AND MAKE SEPARATE SORT FUNCTION LATER
    function sort(data) {
       const songData = document.querySelector("#songsData");
       const tr = document.querySelector("#songsContainer");
 
       tr.addEventListener("click", e => {
          if(e.target.id == "title") {
-            const sortedSongs = data.sort((a, b) => (a.title < b.title ? -1 : 2));
+            const sortedSongs = data.sort((a, b) => (a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
             for(let s of sortedSongs) {
@@ -258,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
                songData.appendChild(tr);
             }
          } else if(e.target.id == "artist") {
-            const sortedArtists = data.sort((a, b) => (a.artist.name < b.artist.name ? -1 : 2));
+            const sortedArtists = data.sort((a, b) => (a.artist.name.toLowerCase() < b.artist.name.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
             for(let s of sortedArtists) {
@@ -284,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
                songData.appendChild(tr);
             }
          } else if(e.target.id == "genre") {
-            const sortedGenres = data.sort((a, b) => (a.genre.name < b.genre.name ? -1 : 2));
+            const sortedGenres = data.sort((a, b) => (a.genre.name.toLowerCase() < b.genre.name.toLowerCase() ? -1 : 2));
             songData.innerHTML = "";
 
             for(let s of sortedGenres) {
@@ -308,6 +372,63 @@ document.addEventListener("DOMContentLoaded", function () {
                tr.appendChild(tableColumn(s, "year"));
                tr.appendChild(tableColumn(s.details, "popularity"));
                songData.appendChild(tr);
+            }
+         }
+      })
+   }
+
+   function search(data) {
+      const titleRadio = document.querySelector("#titleRadio");
+      const titleName = document.querySelector("#titleName");
+      const searchColumn = document.querySelector("#searchColumn");
+      const artistSelect = document.querySelector("#artistSelect");
+      const genreSelect = document.querySelector("#genreSelect");
+      
+      titleRadio.checked = true;
+      titleName.disabled = false;
+      artistSelect.disabled = true;
+      genreSelect.disabled = true;
+
+      searchColumn.addEventListener("click", e => {
+         if(e.target.id == "titleRadio") {
+            titleName.disabled = false;
+            artistSelect.disabled = true;
+            genreSelect.disabled = true;
+         } else if(e.target.id == "artistRadio") {
+            artistSelect.disabled = false;
+            titleName.disabled = true;
+            genreSelect.disabled = true;
+         } else if(e.target.id == "genreRadio") {
+            genreSelect.disabled = false;
+            artistSelect.disabled = true;
+            titleName.disabled = true;
+         }
+      })
+
+      searchColumn.addEventListener("click", e => {
+         if(e.target.id == "clearButton") {
+            populateResults(data);
+            sort(data);
+            titleName.value = "";
+            genreSelect.value = "";
+            artistSelect.value = "";
+         } else if(e.target.id == "filterButton") {
+            if(titleName.disabled == false) {
+               const userChoice = titleName.value.toLowerCase();
+               const selectedSong = data.filter(d => d.title.toLowerCase() == userChoice);
+               populateResults(selectedSong);
+               sort(selectedSong);
+            } else if(artistSelect.disabled == false) {
+               // Retrieve value of selected option, retrieved from: https://stackoverflow.com/questions/1085801/get-selected-value-in-dropdown-list-using-javascript
+               const userOption = artistSelect.options[artistSelect.selectedIndex].value.toLowerCase();
+               const selectedArtist = data.filter(d => d.artist.name.toLowerCase() == userOption);
+               populateResults(selectedArtist);
+               sort(selectedArtist);
+            } else if(genreSelect.disabled == false) {
+               const userOption = genreSelect.options[genreSelect.selectedIndex].value.toLowerCase();
+               const selectedGenre = data.filter(d => d.genre.name.toLowerCase() == userOption);
+               populateResults(selectedGenre);
+               sort(selectedGenre);
             }
          }
       })

@@ -6,6 +6,8 @@
     <title>Index</title>
     <link rel="stylesheet" href="style.css">
     <script src="starting-files/assign2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
     <header>
@@ -68,6 +70,11 @@
                     <th id="genre">Genre</th>
                     <th id="year">Year</th>
                     <th id="popularity">Popularity</th>
+                    <th id="addButton"></th>
+                    <div id="popup2" class="hide">
+                        <p>Song added to playlist!</p>
+                    </div>
+                    
                 </tr>
             </thead>
             <tbody id="songsData">
@@ -76,46 +83,88 @@
         </div>
     </div>
     <div id="playlistContainer" class="hide">
-        <h2>PLAYLIST</h2>
+        <div id="playlistColumn">
+            <h2>Playlist Details</h2>
+            <button id="clearPlaylist">Clear</button>
+            <h3 id="songsNumber"></h3>
+            <table id="playlistTable">
+                <thead>
+                    <tr id="playlistSongsContainer">
+                        <th id="titlePlaylist">Title</th>
+                        <th id="artistPlaylist">Artist</th>
+                        <th id="genrePlaylist">Genre</th>
+                        <th id="yearPlaylist">Year</th>
+                        <th id="popularityPlaylist">Popularity</th>
+                        <th id="removeButton"></th>
+                        <div id="popup3" class="hide">
+                            <p>Song removed from playlist!</p>
+                        </div>
+                    </tr>
+                </thead>
+                <tbody id="playlistData">
+                </tbody>
+            </table>
+        </div>
     </div>
     <div id="detailContainer" class="hide">
-        <h2>DETAILS</h2>
-        <table id="songsDetailsFromHome" class="show">
-            <caption>
-                <h3>Details</h3>
-            </caption>
-            <tr>
-                <th>Title</th>
-                <td id="songTitleHome"></td>
-            </tr>
-            <tr>
-                <th>Energy</th>
-                <td id="songEnergyHome"></td>
-            </tr>
-            <tr>
-                <th>Danceability</th>
-                <td id="songDanceabilityHome"></td>
-            </tr>
-            <tr>
-                <th>Liveness</th>
-                <td id="songLivenessHome"></td>
-            </tr>
-            <tr>
-                <th>Valence</th>
-                <td id="songValenceHome"></td>
-            </tr>
-            <tr>
-                <th>Acousticness</th>
-                <td id="songAcousticnessHome"></td>
-            </tr>
-            <tr>
-                <th>Speechiness</th>
-                <td id="songSpeechinessHome"></td>
-            </tr>
-            <tfoot>
-                <button id="returnButtonHome" class="hide">Return</button>
-            </tfoot>
-       </table>
+        <div id="detailInfo">
+            <h2>DETAILS</h2>
+            <table id="songsDetailsFromHome" class="show">
+                <caption>
+                    <h3>Details</h3>
+                </caption>
+                <tr>
+                    <th>Title</th>
+                    <td id="songTitleHome"></td>
+                </tr>
+                <tr>
+                    <th>Energy</th>
+                    <td id="songEnergyHome"></td>
+                </tr>
+                <tr>
+                    <th>Danceability</th>
+                    <td id="songDanceabilityHome"></td>
+                </tr>
+                <tr>
+                    <th>Liveness</th>
+                    <td id="songLivenessHome"></td>
+                </tr>
+                <tr>
+                    <th>Valence</th>
+                    <td id="songValenceHome"></td>
+                </tr>
+                <tr>
+                    <th>Acousticness</th>
+                    <td id="songAcousticnessHome"></td>
+                </tr>
+                <tr>
+                    <th>Speechiness</th>
+                    <td id="songSpeechinessHome"></td>
+                </tr>
+                <tr>
+                    <th>BPM</th>
+                    <td id="bpmHome"></td>
+                </tr>
+                <tr>
+                    <th>Popularity</th>
+                    <td id="popularityHome"></td>
+                </tr>
+                <tr>
+                    <th>Loudness</th>
+                    <td id="loudnessHome"></td>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <td id="durationHome"></td>
+                </tr>
+                <tfoot>
+                    <button id="returnButtonHome" class="hide">Return</button>
+                </tfoot>
+            </table>
+        </div>
+        <div id="chart">
+            <canvas id="radarChart"></canvas>
+        </div>
     </div>
     <footer>
         <h2>Footer</h2>

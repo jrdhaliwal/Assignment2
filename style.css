@@ -1,12 +1,53 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    margin-bottom: 1em;
+}
+
+footer {
+    width: 100%;
+    height: 80px;
+    background-color: rgb(170, 169, 169);
+    position: fixed;
+    margin-top: 1em;
+}
+
 #homeContainer {
     background-color: rgb(233, 232, 232);
     text-align: center;
     margin-top: 1em;
 }
 
+.column ul, .bigColumn ul {
+    text-align: left;
+}
+
+.column ul, .bigColumn ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Center the list items */
+}
+
 #searchContainer {
     width: 100%;
     text-align: center;
+}
+
+#playlistContainer {
+    width: 100%;
+    text-align: center;
+    
+}
+
+#detailContainer {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 .show {
@@ -17,7 +58,7 @@
     display: none;
 }
 
-header, .column, .bigColumn, footer, #searchColumn, #resultsColumn {
+header, .column, .bigColumn, footer, #searchColumn, #resultsColumn, #playlistColumn, #detailInfo {
     background-color: rgb(170, 169, 169);
 }
 
@@ -40,16 +81,17 @@ nav {
     margin-left: 1em;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    height: 340px;
 }
 
 .bigColumn {
     width: 43%;
     margin-left: 1em;
     margin-right: 1em;
+    height: 340px;
 }
 
 #searchColumn {
-    float: left;
     width: 25%;
     padding: 0;
     margin: 0;
@@ -60,10 +102,40 @@ nav {
 
 #resultsColumn {
     width: 73.8%;
-    margin-left: 1em; /* Add margin to separate the columns */
+    margin-left: 1em; 
     margin-top: 1.5em;
-    max-height: 600px;
+    height: 600px;
     overflow-y: scroll;
+}
+
+#radarChart {
+    width: 500px;
+    height: 500px;
+}
+
+#chart {
+    width: 21.5%;
+    display: inline-block;
+    margin-top: 1em;
+    border: 1px solid black;
+}
+
+#detailInfo {
+    display: inline-block;
+    height: 500px;
+    width: 70%;
+    float: left;
+    margin-top: 1em;
+    text-align: center;
+    margin-bottom: 1em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#songDetailsFromHome {
+    margin: auto;
 }
 
 footer, header {
@@ -72,6 +144,55 @@ footer, header {
 
 footer {
     text-align: center;
+    margin-top: 1em;
 }
 
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table th, table td {
+    width: 2%; 
+    text-align: center; 
+    padding: 2px; 
+}
+
+#addButton {
+    width: 2%;
+}
+
+#removeButton {
+    width: 2%;
+}
+
+#popup {
+    position: fixed;
+    bottom: 840px;
+    right: 5px;
+    background-color: rgb(170, 169, 169);
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 999;
+}
+
+#popup2 {
+    position: fixed;
+    bottom: 750px;
+    right: 30px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 999; /* Ensure it appears above other elements */
+}
+
+#popup3 {
+    background-color: blue;
+    color: #fff;
+    padding: 1px;
+    border-radius: 1px;
+    z-index: 999; /* Ensure it appears above other elements */
+}
 
